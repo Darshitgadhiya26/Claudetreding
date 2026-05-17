@@ -10,7 +10,6 @@ import { cn, formatCurrency, calculateRiskReward } from '@/lib/utils'
 import { useTradeStore } from '@/store/tradeStore'
 import { useMarketStore } from '@/store/marketStore'
 import toast from 'react-hot-toast'
-import { v4 as uuidv4 } from 'uuid' // if available, else use Date.now()
 
 const orderSchema = z.object({
   symbol: z.string().min(1, 'Symbol is required'),
