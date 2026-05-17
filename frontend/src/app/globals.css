@@ -1,0 +1,379 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@layer base {
+  :root {
+    --background: #0a0a0f;
+    --foreground: #e2e8f0;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --surface3: #22222f;
+    --border: #2a2a3a;
+    --border-light: #3a3a4a;
+    --primary: #6366f1;
+    --primary-hover: #4f46e5;
+    --success: #22c55e;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --muted: #4a4a6a;
+    --radius: 0.5rem;
+    --chart-up: #22c55e;
+    --chart-down: #ef4444;
+  }
+
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--surface);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-light);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--muted);
+  }
+
+  /* Firefox scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-light) var(--surface);
+  }
+}
+
+@layer components {
+  /* Glass morphism card */
+  .glass-card {
+    background: rgba(17, 17, 24, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(42, 42, 58, 0.5);
+    border-radius: 0.75rem;
+  }
+
+  /* Chart container */
+  .chart-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: var(--surface);
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+
+  /* Trading table */
+  .trading-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .trading-table th {
+    padding: 0.5rem 0.75rem;
+    text-align: right;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .trading-table th:first-child {
+    text-align: left;
+  }
+
+  .trading-table td {
+    padding: 0.5rem 0.75rem;
+    text-align: right;
+    font-size: 0.8rem;
+    border-bottom: 1px solid rgba(42, 42, 58, 0.3);
+    transition: background-color 0.15s ease;
+  }
+
+  .trading-table td:first-child {
+    text-align: left;
+  }
+
+  .trading-table tr:hover td {
+    background: rgba(42, 42, 58, 0.3);
+    cursor: pointer;
+  }
+
+  /* Price animations */
+  .price-up {
+    animation: pulseUp 0.8s ease-out;
+  }
+
+  .price-down {
+    animation: pulseDown 0.8s ease-out;
+  }
+
+  /* Stat card */
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+    transition: border-color 0.2s ease;
+  }
+
+  .stat-card:hover {
+    border-color: var(--border-light);
+  }
+
+  /* Button variants */
+  .btn-buy {
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+    color: white;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    padding: 0.625rem 1.5rem;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-buy:hover {
+    background: linear-gradient(135deg, #22c55e, #4ade80);
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .btn-sell {
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+    color: white;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    padding: 0.625rem 1.5rem;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-sell:hover {
+    background: linear-gradient(135deg, #ef4444, #f87171);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+    transform: translateY(-1px);
+  }
+
+  /* Input styles */
+  .trading-input {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    color: var(--foreground);
+    font-size: 0.875rem;
+    width: 100%;
+    transition: border-color 0.2s ease;
+    outline: none;
+  }
+
+  .trading-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+  }
+
+  .trading-input::placeholder {
+    color: #64748b;
+  }
+
+  /* Badge styles */
+  .badge-success {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    border-radius: 0.25rem;
+    padding: 0.125rem 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .badge-danger {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 0.25rem;
+    padding: 0.125rem 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .badge-warning {
+    background: rgba(245, 158, 11, 0.15);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: 0.25rem;
+    padding: 0.125rem 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .badge-primary {
+    background: rgba(99, 102, 241, 0.15);
+    color: #6366f1;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: 0.25rem;
+    padding: 0.125rem 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  /* Sidebar styles */
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 0.875rem;
+    border-radius: 0.5rem;
+    color: #94a3b8;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.15s ease;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .sidebar-item:hover {
+    background: rgba(99, 102, 241, 0.1);
+    color: #e2e8f0;
+  }
+
+  .sidebar-item.active {
+    background: rgba(99, 102, 241, 0.15);
+    color: #818cf8;
+    border-left: 3px solid #6366f1;
+  }
+
+  /* Mono font for prices */
+  .price-mono {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.875rem;
+    letter-spacing: -0.01em;
+  }
+
+  /* Option chain ITM/OTM */
+  .otm-cell {
+    background: rgba(17, 17, 24, 0.5);
+  }
+
+  .itm-cell {
+    background: rgba(99, 102, 241, 0.05);
+  }
+
+  .atm-strike {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+    font-weight: 700;
+  }
+}
+
+@layer utilities {
+  .text-success { color: #22c55e; }
+  .text-danger { color: #ef4444; }
+  .text-warning { color: #f59e0b; }
+  .text-primary { color: #6366f1; }
+  .text-muted { color: #64748b; }
+
+  .bg-success-muted { background: rgba(34, 197, 94, 0.1); }
+  .bg-danger-muted { background: rgba(239, 68, 68, 0.1); }
+  .bg-primary-muted { background: rgba(99, 102, 241, 0.1); }
+
+  .border-success { border-color: rgba(34, 197, 94, 0.3); }
+  .border-danger { border-color: rgba(239, 68, 68, 0.3); }
+}
+
+@keyframes pulseUp {
+  0%, 100% { background-color: transparent; }
+  30% { background-color: rgba(34, 197, 94, 0.2); }
+}
+
+@keyframes pulseDown {
+  0%, 100% { background-color: transparent; }
+  30% { background-color: rgba(239, 68, 68, 0.2); }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.3s ease-out;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+/* TradingView chart overrides */
+.tv-chart-wrapper {
+  background: var(--surface) !important;
+}
+
+/* Recharts overrides */
+.recharts-wrapper {
+  font-family: 'Inter', sans-serif !important;
+}
+
+.recharts-text {
+  fill: #64748b !important;
+  font-size: 11px !important;
+}
+
+.recharts-cartesian-axis-tick-value {
+  fill: #64748b !important;
+}
