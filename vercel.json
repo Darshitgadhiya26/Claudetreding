@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "name": "tradesense-frontend",
+  "buildCommand": "cd frontend && npm install && npm run build",
+  "outputDirectory": "frontend/.next",
+  "installCommand": "cd frontend && npm install",
+  "framework": "nextjs",
+  "rootDirectory": "frontend",
+  "env": {
+    "NEXT_OUTPUT_MODE": "export"
+  },
+  "build": {
+    "env": {
+      "NEXT_OUTPUT_MODE": ""
+    }
+  }
+}

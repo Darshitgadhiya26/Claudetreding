@@ -1,0 +1,65 @@
+# Render.com Infrastructure-as-Code
+# Deploy: https://dashboard.render.com/select-repo → pick this repo → "Use render.yaml"
+
+services:
+  # ── FastAPI Backend ──────────────────────────────────────────────────────────
+  - type: web
+    name: tradesense-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tradesense-db
+          property: connectionString
+      - key: REDIS_URL
+        sync: false          # Paste your Upstash Redis URL here after creation
+      - key: SECRET_KEY
+        generateValue: true  # Render auto-generates a secure random value
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "30"
+      - key: ENVIRONMENT
+        value: production
+      - key: DEBUG
+        value: "false"
+      - key: FRONTEND_URL
+        sync: false          # Set to your Vercel URL, e.g. https://tradesense.vercel.app
+      # Optional — fill in via Render dashboard for live broker/AI features
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: ZERODHA_API_KEY
+        sync: false
+      - key: ZERODHA_API_SECRET
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+
+  # ── Celery Worker (background tasks / alerts) ────────────────────────────────
+  - type: worker
+    name: tradesense-celery
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: celery -A app.celery_app worker --loglevel=info --concurrency=2
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tradesense-db
+          property: connectionString
+      - key: REDIS_URL
+        sync: false
+
+# ── PostgreSQL Database ──────────────────────────────────────────────────────
+databases:
+  - name: tradesense-db
+    databaseName: trading_db
+    user: tradesense
+    plan: free               # 1 GB storage, 1 month retention on free tier
